@@ -19,4 +19,17 @@ public class RoomService {
 		 return roomRepository.findAll();
 		 
 	 }
+	 
+	 public Room addRoom(Room room) {
+		 return roomRepository.save(room);
+	 }
+	 
+	 public Room bookRoom(Long id) {
+		 Room room=roomRepository.findById(id).orElseThrow(()->new RuntimeException("Room not found"));
+		 if(room.isBooked()) {
+			 throw new RuntimeException("Room is already booked");
+		 }
+		 room.setBooked(true);
+		 return roomRepository.save(room);
+	 }
 }

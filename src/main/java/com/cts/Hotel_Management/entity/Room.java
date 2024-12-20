@@ -20,6 +20,7 @@ public class Room {
 	private String roomType;
 	@OneToMany
 	private List<Booking> bookings;
+	private boolean booked;
 	
 
 }
