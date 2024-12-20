@@ -18,6 +18,7 @@ public class Room {
 	private Long Id;
 	
 	private String roomType;
+	private double roomPrice;
 	@OneToMany
 	private List<Booking> bookings;
 	private boolean booked;

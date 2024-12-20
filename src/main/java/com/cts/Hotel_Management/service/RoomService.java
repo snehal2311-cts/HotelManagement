@@ -24,6 +24,18 @@ public class RoomService {
 		 return roomRepository.save(room);
 	 }
 	 
+	 public void deleteRoom(Long roomId) {
+		 roomRepository.deleteById(roomId);
+	 }
+	 public void updateRoom(Long id,Room room) {
+		 Room roomOld=roomRepository.findById(id).orElseThrow(()-> new RuntimeException("Room not found"));
+		 roomOld.setBooked(room.isBooked());
+		 roomOld.setRoomPrice(room.getRoomPrice());
+		 roomOld.setRoomType(room.getRoomType());
+		 
+		 
+	 }
+	 
 	 public Room bookRoom(Long id) {
 		 Room room=roomRepository.findById(id).orElseThrow(()->new RuntimeException("Room not found"));
 		 if(room.isBooked()) {
