@@ -19,13 +19,13 @@ import com.cts.Hotel_Management.entity.Booking;
 import com.cts.Hotel_Management.service.BookingService;
 
 
-@RequestMapping
+@RequestMapping("/api")
 @RestController
 public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("/book-room/{roomId}/{userId}")
+    @PostMapping("rooms/book-room/{roomId}/{userId}")
 //    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<Booking> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
@@ -36,13 +36,13 @@ public class BookingController {
         return new ResponseEntity<>(bookingRequest,HttpStatus.OK);
 
     }
-    @GetMapping("/all-bookings")
+    @GetMapping("rooms/all-bookings")
     //@PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<Booking>> getAllBookings() {
+    public List<Booking> getAllBookings() {
        
-        return new ResponseEntity<>( bookingService.getAllBookings(),HttpStatus.OK);
+        return  bookingService.getAllBookings();
     }
-    @DeleteMapping("/cancel/{bookingId}")
+    @DeleteMapping("admin/cancel-booking/{bookingId}")
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public String cancelBooking(@PathVariable Long bookingId) {
         bookingService.cancelBooking(bookingId);

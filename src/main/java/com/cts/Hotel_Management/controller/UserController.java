@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.Hotel_Management.dto.LoginRequest;
 import com.cts.Hotel_Management.dto.UserDTO;
+import com.cts.Hotel_Management.entity.User;
 import com.cts.Hotel_Management.service.UserService;
 
 @RestController
@@ -17,17 +18,17 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@PostMapping("/users/register")
+	@PostMapping("/user/register")
 	public String  registerUser(@RequestBody UserDTO userDTO){
 		
 		 userService.registerUser(userDTO);
 		 return "Registration is successful !";
 	}
 	
-	@PostMapping("/users/login")
-	public String LoginUser(@RequestBody LoginRequest loginRequest) {
-		userService.loginUser(loginRequest);
-		return "Login is successfully !";
+	@PostMapping("/user/login")
+	public User LoginUser(@RequestBody LoginRequest loginRequest) {
+		
+		return userService.loginUser(loginRequest);
 		
 	}
 	

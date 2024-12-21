@@ -46,7 +46,7 @@ private RoomService roomService;
 	//user or admin
 	//to get all rooms
 
-    @GetMapping("/get-rooms")
+    @GetMapping("rooms/get-rooms")
     public List<Room> getAllRooms(){
     	return roomService.getAllRooms();
     }
