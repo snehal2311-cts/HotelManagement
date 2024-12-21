@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cts.Hotel_Management.entity.Booking;
 import com.cts.Hotel_Management.service.BookingService;
 
+import jakarta.validation.Valid;
+
 
 @RequestMapping("/api")
 @RestController
@@ -29,7 +31,7 @@ public class BookingController {
 //    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<Booking> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
-                                                 @RequestBody Booking bookingRequest) {
+                                                 @RequestBody @Valid Booking bookingRequest) {
 
 
          bookingService.saveBooking(roomId, userId, bookingRequest);

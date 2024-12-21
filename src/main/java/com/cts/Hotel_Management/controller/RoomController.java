@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.service.RoomService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class RoomController {
@@ -23,7 +25,7 @@ private RoomService roomService;
 //Admin 
 //add rooms
     @PostMapping("/admin/add-room")
-    public String addRoom(@RequestBody Room room) {
+    public String addRoom(@RequestBody @Valid Room room) {
 	roomService.addRoom(room);
 	return "Room added successfully";
 }
@@ -37,7 +39,7 @@ private RoomService roomService;
     
  //update room
     @PutMapping("/admin/update-room/{id}")
-    public String updateRoom(@PathVariable Long id,@RequestBody Room room) {
+    public String updateRoom(@PathVariable Long id,@RequestBody @Valid Room room) {
 	roomService.updateRoom(id,room);
 	return "Room updated successfully";
 	
