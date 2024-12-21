@@ -1,5 +1,6 @@
 package com.cts.Hotel_Management.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
@@ -18,7 +20,7 @@ public class Room {
 	private Long Id;
 	
 	private String roomType;
-	private double roomPrice;
+	private BigDecimal roomPrice;
 	@OneToMany
 	private List<Booking> bookings;
 	private boolean booked;
