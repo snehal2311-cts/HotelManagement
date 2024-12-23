@@ -9,4 +9,5 @@ public interface UserService {
 	
 	User registerUser(UserDTO userDTO);
 	User loginUser(LoginRequest loginRequest);
+	String registerAdmin(UserDTO userDTO);
 }
