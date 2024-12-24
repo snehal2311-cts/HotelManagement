@@ -29,14 +29,27 @@ public class UserServiceImpl implements UserService  {
 	@Override
 	public User registerUser(UserDTO userDTO) {
 		
+//		User user=new User();
+//		user.setName(userDTO.getName());
+//		user.setEmail(userDTO.getEmail());
+//		user.setPhoneNumber(userDTO.getPhoneNumber());
+//		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+////		user.setRole(userDTO.getRole());
+//		return userRepository.save(user);
+////		return null;
 		User user=new User();
 		user.setName(userDTO.getName());
 		user.setEmail(userDTO.getEmail());
 		user.setPhoneNumber(userDTO.getPhoneNumber());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//		user.setRole(userDTO.getRole());
-		return userRepository.save(user);
-//		return null;
+//		System.out.println("------got user ------");
+		Set<Role> roles = new HashSet<>();
+		Role adminRole = roleRepository.findByRole("ROLE_USER").get();
+		roles.add(adminRole);
+		user.setRole(roles);
+		
+		return  userRepository.save(user);
+		
 	}
 	
 	@Override

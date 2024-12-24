@@ -50,4 +50,12 @@ public class RoomServiceImpl implements RoomService {
 		 room.setBooked(true);
 		 return roomRepository.save(room);
 	 }
+
+	@Override
+	public List<Room> getRoomsByroomType(String roomType) {
+		// TODO Auto-generated method stub
+		
+		
+		 return roomRepository.findByRoomType(roomType);
+	}
 }

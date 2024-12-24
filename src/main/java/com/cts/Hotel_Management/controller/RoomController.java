@@ -3,6 +3,7 @@ package com.cts.Hotel_Management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.Hotel_Management.entity.Room;
@@ -53,5 +55,15 @@ private RoomService roomService;
     @GetMapping("rooms/get-rooms")
     public List<Room> getAllRooms(){
     	return roomService.getAllRooms();
+    }
+    
+    //get room by room type
+    @GetMapping("/rooms/filterBy")
+    public ResponseEntity<List<Room>> getRoomsByType(@RequestParam String roomType) {
+        List<Room> rooms = roomService.getRoomsByroomType(roomType);
+        if (rooms.isEmpty()) {
+            rooms = roomService.getAllRooms();
+        }
+        return ResponseEntity.ok(rooms);
     }
 }
