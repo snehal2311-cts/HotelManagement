@@ -15,34 +15,40 @@ import com.cts.Hotel_Management.entity.User;
 import com.cts.Hotel_Management.service.UserService;
 
 import jakarta.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api")
 @Validated
 public class UserController {
-	
-	@Autowired
-	private UserService userService;
-	
-	@PostMapping("/user/register")
-	public String  registerUser(@RequestBody @Valid UserDTO userDTO){
-		
-		 userService.registerUser(userDTO);
-		 return "Registration is successful !";
-	}
-	@PostMapping("/admin/register")
-	public ResponseEntity<String>  registerAdmin(@RequestBody @Valid UserDTO userDTO){
-		
-		 
-		 return new ResponseEntity<>(userService.registerAdmin(userDTO),HttpStatus.CREATED);
-	}
-	
-	@PostMapping("/user/login")
-	public User LoginUser(@RequestBody @Valid LoginRequest loginRequest) {
-		
-		return userService.loginUser(loginRequest);
-		
-	}
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/user/register")
+    public String registerUser(@RequestBody @Valid UserDTO userDTO) {
+        logger.info("User registration request received for user: {}", userDTO.getEmail());
+        userService.registerUser(userDTO);
+        logger.info("User registered successfully: {}", userDTO.getEmail());
+        return "Registration is successful!";
+    }
+
+    @PostMapping("/admin/register")
+    public ResponseEntity<String> registerAdmin(@RequestBody @Valid UserDTO userDTO) {
+        logger.info("Admin registration request received for user: {}", userDTO.getEmail());
+        String response = userService.registerAdmin(userDTO);
+        logger.info("Admin registered successfully: {}", userDTO.getEmail());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/user/login")
+    public User loginUser(@RequestBody @Valid LoginRequest loginRequest) {
+        logger.info("User login request received for username: {}", loginRequest.getEmail());
+        User user = userService.loginUser(loginRequest);
+        logger.info("User logged in successfully: {}", loginRequest.getEmail());
+        return user;
+    }
 	
 	
 

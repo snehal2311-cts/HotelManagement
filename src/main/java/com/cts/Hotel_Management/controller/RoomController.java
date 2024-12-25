@@ -19,49 +19,60 @@ import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.service.RoomService;
 
 import jakarta.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api")
 public class RoomController {
-@Autowired
-private RoomService roomService;
-//Admin 
-//add rooms
-	@PreAuthorize("hasRole('ADMIN')")
+    private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
+
+    @Autowired
+    private RoomService roomService;
+
+    // Admin 
+    // Add rooms
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/add-room")
     public String addRoom(@RequestBody @Valid Room room) {
-	roomService.addRoom(room);
-	return "Room added successfully";
-}
-    
-    //DeleteRoom
+        logger.info("Add room request received");
+        roomService.addRoom(room);
+        logger.info("Room added successfully: {}", room);
+        return "Room added successfully";
+    }
+
+    // Delete Room
     @DeleteMapping("/admin/delete-room/{id}")
     public String deleteRoom(@PathVariable Long id) {
-    	roomService.deleteRoom(id);
-    	return "Room deleted successfully";
+        logger.info("Delete room request received for roomId: {}", id);
+        roomService.deleteRoom(id);
+        logger.info("Room deleted successfully for roomId: {}", id);
+        return "Room deleted successfully";
     }
-    
- //update room
+
+    // Update room
     @PutMapping("/admin/update-room/{id}")
-    public String updateRoom(@PathVariable Long id,@RequestBody @Valid Room room) {
-	roomService.updateRoom(id,room);
-	return "Room updated successfully";
-	
-}
-
-	//user or admin
-	//to get all rooms
-
-    @GetMapping("rooms/get-rooms")
-    public List<Room> getAllRooms(){
-    	return roomService.getAllRooms();
+    public String updateRoom(@PathVariable Long id, @RequestBody @Valid Room room) {
+        logger.info("Update room request received for roomId: {}", id);
+        roomService.updateRoom(id, room);
+        logger.info("Room updated successfully for roomId: {}", id);
+        return "Room updated successfully";
     }
-    
-    //get room by room type
+
+    // User or admin
+    // Get all rooms
+    @GetMapping("rooms/get-rooms")
+    public List<Room> getAllRooms() {
+        logger.info("Fetching all rooms");
+        return roomService.getAllRooms();
+    }
+
+    // Get room by room type
     @GetMapping("/rooms/filterBy")
     public ResponseEntity<List<Room>> getRoomsByType(@RequestParam String roomType) {
+        logger.info("Fetching rooms by type: {}", roomType);
         List<Room> rooms = roomService.getRoomsByroomType(roomType);
         if (rooms.isEmpty()) {
+            logger.info("No rooms found for type: {}. Fetching all rooms.", roomType);
             rooms = roomService.getAllRooms();
         }
         return ResponseEntity.ok(rooms);

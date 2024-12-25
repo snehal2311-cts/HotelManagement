@@ -1,5 +1,7 @@
 package com.cts.Hotel_Management.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,32 +26,32 @@ import jakarta.validation.Valid;
 @RequestMapping("/api")
 @RestController
 public class BookingController {
+	private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
+
     @Autowired
     private BookingService bookingService;
 
     @PostMapping("rooms/book-room/{roomId}/{userId}")
-//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<Booking> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
                                                  @RequestBody @Valid Booking bookingRequest) {
-
-
-         bookingService.saveBooking(roomId, userId, bookingRequest);
-        return new ResponseEntity<>(bookingRequest,HttpStatus.OK);
-
+        logger.info("Booking request received for roomId: {} and userId: {}", roomId, userId);
+        bookingService.saveBooking(roomId, userId, bookingRequest);
+        logger.info("Booking saved successfully for roomId: {} and userId: {}", roomId, userId);
+        return new ResponseEntity<>(bookingRequest, HttpStatus.OK);
     }
+
     @GetMapping("rooms/all-bookings")
-    //@PreAuthorize("hasAuthority('ADMIN')")
     public List<Booking> getAllBookings() {
-       
-        return  bookingService.getAllBookings();
+        logger.info("Fetching all bookings");
+        return bookingService.getAllBookings();
     }
+
     @DeleteMapping("admin/cancel-booking/{bookingId}")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public String cancelBooking(@PathVariable Long bookingId) {
+        logger.info("Cancel booking request received for bookingId: {}", bookingId);
         bookingService.cancelBooking(bookingId);
-        return "Booking deleted successfully !";
-        
+        logger.info("Booking cancelled successfully for bookingId: {}", bookingId);
+        return "Booking deleted successfully!";
     }
-    
 }
