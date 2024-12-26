@@ -37,9 +37,9 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChaoin(HttpSecurity http ) throws Exception{
 		http.csrf(httpSecurityCsrfConfigurer->httpSecurityCsrfConfigurer.disable())
 		.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/admin/add-room").hasRole("ADMIN")
-				.requestMatchers("/api/user/**","/api/rooms/**","/api/admin/**").permitAll()
-				.requestMatchers("/api/rooms/**").permitAll()
+				.requestMatchers("/api/admin/**").hasRole("ADMIN")
+				.requestMatchers("/api/user/**").permitAll()
+				//.requestMatchers("/api/rooms/**").permitAll()
 //				.anyRequest().authenticated()
 				)
 		.httpBasic(Customizer.withDefaults());

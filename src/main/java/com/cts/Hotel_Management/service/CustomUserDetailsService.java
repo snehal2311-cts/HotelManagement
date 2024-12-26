@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService{
         		.orElseThrow(() -> new OurException("Username/Email not Found"));
         
 //        if(user==null) {
-//        	throw new UsernameNotFoundException("No user found with this email"+email);
+//        	return (UserDetails) user;
 //        }
         Set<GrantedAuthority> authorities = user.getRole().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole()))

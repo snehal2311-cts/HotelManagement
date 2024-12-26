@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.Hotel_Management.dto.BookingDTO;
 import com.cts.Hotel_Management.entity.Booking;
 import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.entity.User;
@@ -60,7 +61,6 @@ public class BookingServiceImpl implements BookingService {
 	    
 	
 	}
-	@Override
 	public boolean roomIsAvailable(Booking bookingRequest, List<Booking> existingBookings) {
 	    return existingBookings.stream()
 	            .noneMatch(existingBooking ->

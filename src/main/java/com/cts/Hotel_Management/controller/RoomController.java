@@ -41,6 +41,7 @@ public class RoomController {
     }
 
     // Delete Room
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/delete-room/{id}")
     public String deleteRoom(@PathVariable Long id) {
         logger.info("Delete room request received for roomId: {}", id);
@@ -50,6 +51,7 @@ public class RoomController {
     }
 
     // Update room
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/update-room/{id}")
     public String updateRoom(@PathVariable Long id, @RequestBody @Valid Room room) {
         logger.info("Update room request received for roomId: {}", id);

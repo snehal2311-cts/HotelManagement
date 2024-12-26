@@ -2,17 +2,27 @@ package com.cts.Hotel_Management.dto;
 
 import java.time.LocalDate;
 
+import com.cts.Hotel_Management.entity.Room;
+import com.cts.Hotel_Management.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingDTO {
 
-    private Long id;
+//    public BookingDTO(Long roomId, Long userId, LocalDate checkInDate2, LocalDate checkOutDate2, int numOfAdults2,
+//			int numOfChildren2) {
+//		// TODO Auto-generated constructor stub
+//	}
+	private Long id;
     @NotNull(message = "check in date is required")
     private LocalDate checkInDate;
 
@@ -26,7 +36,7 @@ public class BookingDTO {
     private int numOfChildren;
 
     private int totalNumOfGuest;
-    private UserDTO user;
-    private RoomDTO room;
+    private User user;
+    private Room room;
     
 }
