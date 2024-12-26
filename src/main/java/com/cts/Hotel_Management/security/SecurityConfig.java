@@ -39,7 +39,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/api/admin/**").hasRole("ADMIN")
 				.requestMatchers("/api/user/**").permitAll()
-				//.requestMatchers("/api/rooms/**").permitAll()
+				.requestMatchers("/api/rooms/**").permitAll()
 //				.anyRequest().authenticated()
 				)
 		.httpBasic(Customizer.withDefaults());

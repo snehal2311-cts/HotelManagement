@@ -20,9 +20,18 @@ public class Room {
 	private Long Id;
 	
 	private String roomType;
+	
 	private BigDecimal roomPrice;
+	
+	private String description;
+	
+    private List<String> amenities;
+    
+    private int capacity;
+    
 	@OneToMany
 	private List<Booking> bookings;
+	
 	private boolean booked;
 	
 

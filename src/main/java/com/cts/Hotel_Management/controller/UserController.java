@@ -29,9 +29,9 @@ public class UserController {
     @PostMapping("/user/register")
     public String registerUser(@RequestBody @Valid UserDTO userDTO) {
         logger.info("User registration request received for user: {}", userDTO.getEmail());
-        userService.registerUser(userDTO);
+       
         logger.info("User registered successfully: {}", userDTO.getEmail());
-        return "Registration is successful!";
+        return  userService.registerUser(userDTO);
     }
 
     @PostMapping("/admin/register")
@@ -43,11 +43,11 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public User loginUser(@RequestBody @Valid LoginRequest loginRequest) {
+    public String loginUser(@RequestBody @Valid LoginRequest loginRequest) {
         logger.info("User login request received for username: {}", loginRequest.getEmail());
-        User user = userService.loginUser(loginRequest);
+         userService.loginUser(loginRequest);
         logger.info("User logged in successfully: {}", loginRequest.getEmail());
-        return user;
+        return "Login is successfull";
     }
 	
 	

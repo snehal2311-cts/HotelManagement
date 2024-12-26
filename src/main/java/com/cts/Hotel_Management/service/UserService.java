@@ -7,7 +7,9 @@ import com.cts.Hotel_Management.entity.User;
 //@Service
 public interface UserService {
 	
-	User registerUser(UserDTO userDTO);
-	User loginUser(LoginRequest loginRequest);
+	String registerUser(UserDTO userDTO);
 	String registerAdmin(UserDTO userDTO);
+	UserDTO convertToDto(User user);
+	User convertToEntity(UserDTO userDTO);
+	void loginUser(LoginRequest loginRequest);
 }

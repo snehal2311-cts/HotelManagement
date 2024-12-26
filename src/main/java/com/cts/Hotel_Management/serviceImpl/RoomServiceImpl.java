@@ -2,9 +2,11 @@ package com.cts.Hotel_Management.serviceImpl;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.Hotel_Management.dto.RoomDTO;
 import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.repository.RoomRepository;
 import com.cts.Hotel_Management.service.RoomService;
@@ -13,6 +15,9 @@ import com.cts.Hotel_Management.service.RoomService;
 public class RoomServiceImpl implements RoomService {
 	@Autowired
 	 private RoomRepository roomRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	 
 	@Override
 	 public List<Room> getAllRooms(){
@@ -53,9 +58,16 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<Room> getRoomsByroomType(String roomType) {
-		// TODO Auto-generated method stub
-		
-		
+		// TODO Auto-generated method stub	
 		 return roomRepository.findByRoomType(roomType);
+	}
+	
+	@Override
+	public RoomDTO convertToDto(Room room) {
+		return modelMapper.map(room, RoomDTO.class);
+	}
+	@Override
+	public Room convertToEntity(RoomDTO roomDTO) {
+		return modelMapper.map(roomDTO, Room.class);
 	}
 }

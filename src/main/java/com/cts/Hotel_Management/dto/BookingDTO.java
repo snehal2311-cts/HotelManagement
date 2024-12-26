@@ -36,7 +36,7 @@ public class BookingDTO {
     private int numOfChildren;
 
     private int totalNumOfGuest;
-    private User user;
-    private Room room;
+    private Long userId;
+    private Long roomId;
     
 }

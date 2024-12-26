@@ -30,8 +30,7 @@ import org.hibernate.annotations.ManyToAny;
 public class UserDTO {
    
    
-//    private Long id;
-
+    private Long id;
     @NotBlank(message = "Email is required")
     @Email(message="Invalid email")
     @Column(unique = true)

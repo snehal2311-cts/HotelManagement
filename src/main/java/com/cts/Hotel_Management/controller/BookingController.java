@@ -33,10 +33,12 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("rooms/book-room/{roomId}/{userId}")
-    public ResponseEntity<Booking> saveBookings(@PathVariable Long roomId,
+    public ResponseEntity<BookingDTO> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
-                                                 @RequestBody @Valid Booking bookingRequest) {
+                                                 @RequestBody @Valid BookingDTO bookingRequest) {
+    
         logger.info("Booking request received for roomId: {} and userId: {}", roomId, userId);
         bookingService.saveBooking(roomId, userId, bookingRequest);
         logger.info("Booking saved successfully for roomId: {} and userId: {}", roomId, userId);
@@ -45,7 +47,7 @@ public class BookingController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/all-bookings")
-    public List<Booking> getAllBookings() {
+    public List<BookingDTO> getAllBookings() {
         logger.info("Fetching all bookings");
         return bookingService.getAllBookings();
     }
