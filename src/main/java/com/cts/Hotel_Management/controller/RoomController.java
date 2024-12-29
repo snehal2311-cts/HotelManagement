@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.Hotel_Management.dto.RoomDTO;
 import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.service.RoomService;
 
@@ -31,9 +32,8 @@ public class RoomController {
 
     // Admin 
     // Add rooms
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/add-room")
-    public String addRoom(@RequestBody @Valid Room room) {
+    public String addRoom(@RequestBody @Valid RoomDTO room) {
         logger.info("Add room request received");
         roomService.addRoom(room);
         logger.info("Room added successfully: {}", room);
@@ -41,7 +41,6 @@ public class RoomController {
     }
 
     // Delete Room
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/delete-room/{id}")
     public String deleteRoom(@PathVariable Long id) {
         logger.info("Delete room request received for roomId: {}", id);
@@ -51,7 +50,6 @@ public class RoomController {
     }
 
     // Update room
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/update-room/{id}")
     public String updateRoom(@PathVariable Long id, @RequestBody @Valid Room room) {
         logger.info("Update room request received for roomId: {}", id);
@@ -63,16 +61,16 @@ public class RoomController {
     // User or admin
     // Get all rooms
     @GetMapping("rooms/get-rooms")
-    public List<Room> getAllRooms() {
+    public List<RoomDTO> getAllRooms() {
         logger.info("Fetching all rooms");
         return roomService.getAllRooms();
     }
 
     // Get room by room type
     @GetMapping("/rooms/filterBy")
-    public ResponseEntity<List<Room>> getRoomsByType(@RequestParam String roomType) {
+    public ResponseEntity<List<RoomDTO>> getRoomsByType(@RequestParam String roomType) {
         logger.info("Fetching rooms by type: {}", roomType);
-        List<Room> rooms = roomService.getRoomsByroomType(roomType);
+        List<RoomDTO> rooms = roomService.getRoomsByroomType(roomType);
         if (rooms.isEmpty()) {
             logger.info("No rooms found for type: {}. Fetching all rooms.", roomType);
             rooms = roomService.getAllRooms();

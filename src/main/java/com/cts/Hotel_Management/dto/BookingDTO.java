@@ -18,10 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookingDTO {
 
-//    public BookingDTO(Long roomId, Long userId, LocalDate checkInDate2, LocalDate checkOutDate2, int numOfAdults2,
-//			int numOfChildren2) {
-//		// TODO Auto-generated constructor stub
-//	}
 	private Long id;
     @NotNull(message = "check in date is required")
     private LocalDate checkInDate;

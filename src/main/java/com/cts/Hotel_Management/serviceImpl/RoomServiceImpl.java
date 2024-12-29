@@ -1,12 +1,14 @@
 package com.cts.Hotel_Management.serviceImpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.Hotel_Management.dto.RoomDTO;
+import com.cts.Hotel_Management.entity.Booking;
 import com.cts.Hotel_Management.entity.Room;
 import com.cts.Hotel_Management.repository.RoomRepository;
 import com.cts.Hotel_Management.service.RoomService;
@@ -20,13 +22,17 @@ public class RoomServiceImpl implements RoomService {
 	private ModelMapper modelMapper;
 	 
 	@Override
-	 public List<Room> getAllRooms(){
-		 return roomRepository.findAll();
+	 public List<RoomDTO> getAllRooms(){
+		List<Room> rooms=roomRepository.findAll();
+		  return rooms.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
 		 
 	 }
 	 
 	@Override
-	 public Room addRoom(Room room) {
+	 public Room addRoom(RoomDTO roomDTO) {
+		Room room=convertToEntity(roomDTO);
 		 return roomRepository.save(room);
 	 }
 	 
@@ -57,9 +63,12 @@ public class RoomServiceImpl implements RoomService {
 	 }
 
 	@Override
-	public List<Room> getRoomsByroomType(String roomType) {
+	public List<RoomDTO> getRoomsByroomType(String roomType) {
 		// TODO Auto-generated method stub	
-		 return roomRepository.findByRoomType(roomType);
+		List<Room> rooms=roomRepository.findByRoomType(roomType);
+		 return rooms.stream()
+	                .map(this::convertToDto)
+	                .collect(Collectors.toList());
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.cts.Hotel_Management.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,14 +27,15 @@ public class RoomDTO {
     @DecimalMin(value = "0.0", inclusive = false, message = "Room price must be greater than 0")
     private BigDecimal roomPrice;
     
-    private List<BookingDTO> bookings;
-    
     @Size(max = 500, message = "Description must be less than 500 characters")
     private String description;
 
     @NotEmpty(message = "Amenities list cannot be empty")
+    @ElementCollection
     private List<String> amenities;
 
     @Min(value = 1, message = "Capacity must be at least 1")
     private int capacity;
+    
+    private List<BookingDTO> bookings;
 }

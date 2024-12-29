@@ -1,9 +1,11 @@
 package com.cts.Hotel_Management.controller;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -15,19 +17,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
-import com.cts.Hotel_Management.entity.Booking;
-import com.cts.Hotel_Management.entity.User;
-import com.cts.Hotel_Management.entity.Room;
+import com.cts.Hotel_Management.dto.BookingDTO;
 import com.cts.Hotel_Management.service.BookingService;
 
 public class BookingControllerTest {
 
-    @Mock
-    private BookingService bookingService;
-
     @InjectMocks
     private BookingController bookingController;
+
+    @Mock
+    private BookingService bookingService;
 
     @BeforeEach
     public void setUp() {
@@ -35,108 +36,52 @@ public class BookingControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ROLE_USER")
     public void testSaveBookings() {
-        Long roomId = 1L;
-        Long userId = 1L;
-        Booking bookingRequest = new Booking(userId, null, null, 0, 0, 0, null, null);
-        bookingRequest.setId(1L);
-        bookingRequest.setCheckInDate(LocalDate.of(2024, 12, 26));
-        bookingRequest.setCheckOutDate(LocalDate.of(2024, 12, 30));
-        bookingRequest.setNumOfAdults(2);
-        bookingRequest.setNumOfChildren(1);
-        bookingRequest.setTotalNumOfGuest(3);
+        BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setRoomId(1L);
+        bookingDTO.setUserId(1L);
+        bookingDTO.setCheckInDate(LocalDate.of(2024, 12, 10));
+        bookingDTO.setCheckOutDate(LocalDate.of(2024, 12, 12));
+        bookingDTO.setNumOfAdults(2);
+        bookingDTO.setNumOfChildren(1);
 
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("john.doe@example.com");
-        user.setName("John Doe");
-        user.setPhoneNumber("1234567890");
-        user.setPassword("password");
-        bookingRequest.setUser(user);
+        doNothing().when(bookingService).saveBooking(anyLong(), anyLong(), any(BookingDTO.class));
 
-        Room room = new Room();
-        room.setId(1L);
-        room.setRoomType("Deluxe Room");
-        room.setRoomPrice(BigDecimal.valueOf(200.00));
-        room.setBooked(false);
-        bookingRequest.setRoom(room);
+        ResponseEntity<BookingDTO> response = bookingController.saveBookings(1L, 1L, bookingDTO);
 
-        doNothing().when(bookingService).saveBooking(roomId, userId, bookingRequest);
-
-        ResponseEntity<Booking> response = bookingController.saveBookings(roomId, userId, bookingRequest);
-
+        verify(bookingService).saveBooking(1L, 1L, bookingDTO);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bookingRequest, response.getBody());
-        verify(bookingService, times(1)).saveBooking(roomId, userId, bookingRequest);
+        assertEquals(bookingDTO, response.getBody());
     }
 
     @Test
+    @WithMockUser(roles = "ROLE_ADMIN")
     public void testGetAllBookings() {
-        Booking booking1 = new Booking(null, null, null, 0, 0, 0, null, null);
+        BookingDTO booking1 = new BookingDTO();
         booking1.setId(1L);
-        booking1.setCheckInDate(LocalDate.of(2024, 12, 26));
-        booking1.setCheckOutDate(LocalDate.of(2024, 12, 30));
-        booking1.setNumOfAdults(2);
-        booking1.setNumOfChildren(1);
-        booking1.setTotalNumOfGuest(3);
-
-        User user1 = new User();
-        user1.setId(1L);
-        user1.setEmail("john.doe@example.com");
-        user1.setName("John Doe");
-        user1.setPhoneNumber("1234567890");
-        user1.setPassword("password");
-        booking1.setUser(user1);
-
-        Room room1 = new Room();
-        room1.setId(1L);
-        room1.setRoomType("Deluxe Room");
-        room1.setRoomPrice(BigDecimal.valueOf(200.00));
-        room1.setBooked(false);
-        booking1.setRoom(room1);
-
-        Booking booking2 = new Booking(null, null, null, 0, 0, 0, user1, room1);
+        BookingDTO booking2 = new BookingDTO();
         booking2.setId(2L);
-        booking2.setCheckInDate(LocalDate.of(2024, 12, 27));
-        booking2.setCheckOutDate(LocalDate.of(2024, 12, 31));
-        booking2.setNumOfAdults(1);
-        booking2.setNumOfChildren(0);
-        booking2.setTotalNumOfGuest(1);
 
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setEmail("jane.smith@example.com");
-        user2.setName("Jane Smith");
-        user2.setPhoneNumber("0987654321");
-        user2.setPassword("password");
-        booking2.setUser(user2);
-
-        Room room2 = new Room();
-        room2.setId(2L);
-        room2.setRoomType("Standard Room");
-        room2.setRoomPrice(BigDecimal.valueOf(150.00));
-        room2.setBooked(false);
-        booking2.setRoom(room2);
-
-        List<Booking> bookings = Arrays.asList(booking1, booking2);
-
+        List<BookingDTO> bookings = Arrays.asList(booking1, booking2);
         when(bookingService.getAllBookings()).thenReturn(bookings);
 
-        List<Booking> response = bookingController.getAllBookings();
+        List<BookingDTO> response = bookingController.getAllBookings();
 
+        verify(bookingService).getAllBookings();
         assertEquals(2, response.size());
-        verify(bookingService, times(1)).getAllBookings();
+        assertEquals(1L, response.get(0).getId());
+        assertEquals(2L, response.get(1).getId());
     }
 
     @Test
+    @WithMockUser(roles = "ROLE_ADMIN")
     public void testCancelBooking() {
-        Long bookingId = 1L;
+        doNothing().when(bookingService).cancelBooking(anyLong());
 
-        doNothing().when(bookingService).cancelBooking(bookingId);
+        String response = bookingController.cancelBooking(1L);
 
-        String response = bookingController.cancelBooking(bookingId);
-
+        verify(bookingService).cancelBooking(1L);
         assertEquals("Booking deleted successfully!", response);
-        verify(bookingService, times(1)).cancelBooking(bookingId);
     }
 }

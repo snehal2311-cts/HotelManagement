@@ -43,31 +43,38 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public void saveBooking(Long roomId, Long userId, BookingDTO bookingRequest) {
 	    
+		 // Validate dates
+	    if (bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate())) {
+	        throw new IllegalArgumentException("Check-out date must come after check-in date");
+	    }
 
-	    
-	        // Validate dates
-	        if (bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate())) {
-	            throw new IllegalArgumentException("Check-out date must come after check-in date");
-	        }
+	    // Fetch room and user
+	    Room room = roomRepository.findById(roomId)
+	            .orElseThrow(() -> new OurException("Room Not Found"));
+	    User user = userRepository.findById(userId)
+	            .orElseThrow(() -> new OurException("User Not Found"));
 
-	        // Fetch room and user
-	        Room room = roomRepository.findById(roomId)
-	                .orElseThrow(() -> new OurException("Room Not Found"));
-	        User user = userRepository.findById(userId)
-	                .orElseThrow(() -> new OurException("User Not Found"));
+	    // Check room availability
+	    if (!roomIsAvailable(bookingRequest, room.getBookings())) {
+	        throw new OurException("Room not available for selected date range");
+	    }
 
-	        // Check room availability
-	        if (!roomIsAvailable(bookingRequest, room.getBookings())) {
-	            throw new OurException("Room not available for selected date range");
-	        }
+	    // Set booking details
+	    bookingRequest.setRoomId(roomId);
+	    bookingRequest.setUserId(userId);
+	    int total = bookingRequest.getNumOfAdults() + bookingRequest.getNumOfChildren();
+	    bookingRequest.setTotalNumOfGuest(total);
 
-	        // Set booking details
-	        bookingRequest.setRoomId(roomId);
-	        bookingRequest.setUserId(userId);
-	        int total = bookingRequest.getNumOfAdults()+bookingRequest.getNumOfChildren();
-	        bookingRequest.setTotalNumOfGuest(total);
-	        // Save booking
-	        Booking booking = convertToEntity(bookingRequest);
+	    // Convert DTO to entity
+	    Booking booking = convertToEntity(bookingRequest);
+	    booking.setRoom(room);
+	    booking.setUser(user);
+
+	    // Add booking to room's booking list
+	    room.getBookings().add(booking);
+
+	    // Save room and booking
+	    roomRepository.save(room); // CascadeType.ALL will save the booking as well
 	        bookingRepository.save(booking);
 		
 	    

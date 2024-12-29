@@ -9,12 +9,12 @@ import com.cts.Hotel_Management.entity.Room;
 public interface RoomService {
 
 	
-	 List<Room> getAllRooms();
-	 Room addRoom(Room room);
+	List<RoomDTO> getAllRooms();
+	 Room addRoom(RoomDTO room);
 	 void deleteRoom(Long roomId);
 	 void updateRoom(Long id,Room room);
 	 Room bookRoom(Long id);
-	 List<Room> getRoomsByroomType(String roomType);
+	 List<RoomDTO>getRoomsByroomType(String roomType);
 	 RoomDTO convertToDto(Room room);
 	 Room convertToEntity(RoomDTO roomDTO);
 	 

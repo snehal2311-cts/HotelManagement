@@ -33,7 +33,6 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("rooms/book-room/{roomId}/{userId}")
     public ResponseEntity<BookingDTO> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
@@ -45,14 +44,12 @@ public class BookingController {
         return new ResponseEntity<>(bookingRequest, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/all-bookings")
     public List<BookingDTO> getAllBookings() {
         logger.info("Fetching all bookings");
         return bookingService.getAllBookings();
     }
-     
-    @PreAuthorize("hasRole('ADMIN')")
+
     @DeleteMapping("admin/cancel-booking/{bookingId}")
     public String cancelBooking(@PathVariable Long bookingId) {
         logger.info("Cancel booking request received for bookingId: {}", bookingId);

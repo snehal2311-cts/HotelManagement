@@ -3,6 +3,7 @@ package com.cts.Hotel_Management.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Room {
     
     private int capacity;
     
-	@OneToMany
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Booking> bookings;
 	
 	private boolean booked;
