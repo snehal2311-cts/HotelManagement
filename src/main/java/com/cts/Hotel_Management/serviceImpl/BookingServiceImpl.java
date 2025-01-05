@@ -99,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
 		        roomRepository.save(room); // Save the updated room status
 		        bookingRepository.deleteById(id);
 		    } else {
-		        // Handle the case where the booking is not found
+		        // Handled the case where the booking is not found
 		        throw new  RuntimeException("Booking with id " + id + " not found");
 		    }
 		}

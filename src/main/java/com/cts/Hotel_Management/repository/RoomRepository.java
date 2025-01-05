@@ -12,5 +12,5 @@ import com.cts.Hotel_Management.entity.Room;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 	
 	 List<Room> findByRoomType(String roomType);
-
+	 List<Room> findAllByOrderByRoomPriceDesc();
 }

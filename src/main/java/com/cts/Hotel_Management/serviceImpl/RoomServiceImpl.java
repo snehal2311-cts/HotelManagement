@@ -46,7 +46,8 @@ public class RoomServiceImpl implements RoomService {
 		 Room roomOld=roomRepository.findById(id).orElseThrow(()-> new RuntimeException("Room not found"));
 		 roomOld.setBooked(room.isBooked());
 		 roomOld.setRoomPrice(room.getRoomPrice());
-		 roomOld.setRoomType(room.getRoomType());
+		// roomOld.setRoomType(room.getRoomType());
+		 roomRepository.save(roomOld);
 		 
 		 
 	 }
@@ -78,5 +79,13 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public Room convertToEntity(RoomDTO roomDTO) {
 		return modelMapper.map(roomDTO, Room.class);
+	}
+
+	@Override
+	public List<RoomDTO> getRoomsOrderByRoomPriceDesc() {
+		List<Room> rooms=roomRepository.findAllByOrderByRoomPriceDesc();
+		 return rooms.stream()
+	                .map(this::convertToDto)
+	                .collect(Collectors.toList());
 	}
 }

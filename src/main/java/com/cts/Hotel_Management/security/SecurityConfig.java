@@ -26,6 +26,7 @@ public class SecurityConfig {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+	//Dependency injection by constructor injection
 	public SecurityConfig(CustomUserDetailsService customUserDetailsService,
 			JwtAuthenticationFilter jwtAuthenticationFilter) {
 		this.customUserDetailsService = customUserDetailsService;

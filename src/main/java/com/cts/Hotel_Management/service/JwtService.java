@@ -55,9 +55,9 @@ public class JwtService {
         User user = userOptional.orElseThrow(() -> new IllegalArgumentException("User not found"));
         String token = Jwts
                 .builder()
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000 * 30))
+                .subject(user.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 30*60*1000))
                 .signWith(getSigninKey())
                 .compact();
 
@@ -65,7 +65,7 @@ public class JwtService {
     }
 
     private SecretKey getSigninKey() {
-        // TODO Auto-generated method stub
+   
         byte[] keyBytes = Decoders.BASE64URL.decode(secret_key);
         return Keys.hmacShaKeyFor(keyBytes);
     }

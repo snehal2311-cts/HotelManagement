@@ -15,6 +15,7 @@ public interface RoomService {
 	 void updateRoom(Long id,Room room);
 	 Room bookRoom(Long id);
 	 List<RoomDTO>getRoomsByroomType(String roomType);
+	 List<RoomDTO> getRoomsOrderByRoomPriceDesc();
 	 RoomDTO convertToDto(Room room);
 	 Room convertToEntity(RoomDTO roomDTO);
 	 

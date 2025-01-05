@@ -77,4 +77,14 @@ public class RoomController {
         }
         return ResponseEntity.ok(rooms);
     }
+    @GetMapping("/rooms/roomsPrice/high-low")
+    public ResponseEntity<List<RoomDTO>> findByRoomPriceOrderByDesc() {
+        logger.info("Fetching rooms by type: {}");
+        List<RoomDTO> rooms = roomService.getRoomsOrderByRoomPriceDesc();
+        if (rooms.isEmpty()) {
+            logger.info("No rooms found for type: {}. Fetching all rooms.");
+            rooms = roomService.getAllRooms();
+        }
+        return ResponseEntity.ok(rooms);
+    }
 }
