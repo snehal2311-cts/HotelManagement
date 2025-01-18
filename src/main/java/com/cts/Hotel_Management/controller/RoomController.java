@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class RoomController {
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
@@ -79,7 +81,7 @@ public class RoomController {
     }
     @GetMapping("/rooms/roomsPrice/high-low")
     public ResponseEntity<List<RoomDTO>> findByRoomPriceOrderByDesc() {
-        logger.info("Fetching rooms by type: {}");
+        logger.info("Fetching rooms by price: {}");
         List<RoomDTO> rooms = roomService.getRoomsOrderByRoomPriceDesc();
         if (rooms.isEmpty()) {
             logger.info("No rooms found for type: {}. Fetching all rooms.");

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
     @Override
-    public String register(UserDTO userDTO) {
+    public UserDTO register(UserDTO userDTO) {
         if (userDTO == null) {
             throw new IllegalArgumentException("UserDTO cannot be null");
         }
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
        // String token = jwtService.generateToken(Optional.of(user));
 
-        return "Registered Successfully";
+        return userDTO;
     }
 
     @Override

@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 
 public interface UserService {
 
-	String register(@Valid UserDTO userDTO);
+	UserDTO register(@Valid UserDTO userDTO);
 
 	AuthenticationResponse login( @Valid LoginRequest loginRequest);
 

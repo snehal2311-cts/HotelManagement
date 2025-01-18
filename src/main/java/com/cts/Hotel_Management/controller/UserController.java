@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 @Validated
 public class UserController {
@@ -28,7 +30,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/register")
-	public ResponseEntity<String> register(
+	public ResponseEntity<UserDTO> register(
 			@RequestBody @Valid UserDTO userDTO) {
 		return ResponseEntity.ok(userService.register(userDTO));
 	}
